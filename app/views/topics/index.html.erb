@@ -1,0 +1,11 @@
+<h1 class="text-red-500">
+	topics index
+</h1>
+
+<ul>
+	<% @topics.each do |topic| %>
+		<li>
+			<%= link_to(topic.name, topic_path(topic.id)) %>
+		</li>
+	<% end %>
+</ul>
