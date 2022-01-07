@@ -1,0 +1,6 @@
+version: '3'
+services:
+  mysql:
+    platform: linux/arm64/v8
+  rails:
+    platform: linux/arm64/v8

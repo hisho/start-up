@@ -1,0 +1,37 @@
+version: '3'
+services:
+  mysql:
+    image: mysql/mysql-server:8.0.26-1.2.4-server
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --sort_buffer_size=1073741824
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: root
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+  rails:
+    build: .
+    command: >
+      bash -c
+      "bundle install && rm -f ./tmp/pids/server.pid && bundle exec rails s -p 4000 -b '0.0.0.0'"
+    volumes:
+      - .:/rails
+      - /app/vendor
+      - /app/tmp
+      - /app/log
+      - /app/.git
+      - /app/.idea
+    ports:
+      - "4000:4000"
+    environment:
+      - RAILS_MAX_THREADS=10
+      - RAILS_ENV=development
+      - EDITOR=vim
+      - RAILS_SERVE_STATIC_FILES=ON
+      - RAILS_LOG_TO_STDOUT=ON
+    depends_on:
+      - mysql
